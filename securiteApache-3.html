@@ -1,0 +1,116 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Apache</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h2>mod_security</h2>
+          <p>Modsecurity est un pare-feu applicatif, dont le rôle est de filtrer les requêtes entrant sur un serveur HTTP Apache. Il se présente sous la forme d'un module apache, qui analyse les requêtes reçues grâce à l'emploi d'une base des règles de requêtes considérées comme non souhaitées. Ces règles sont codées sous forme d'expressions régulières.</p>
+          <ul>
+            <li>
+              <h4>Phase 1 : Traitement des en-têtes de la requête</h4>
+              <p>Cette phase permet notamment d’inspecter les arguments passés dans l’URL dans le cas d’une requête en GET ainsi que de vérifier les cookies ou le UserAgent.</p>
+            </li>
+            <li>
+              <h4>Phase 2 : Traitement du corps de la requête</h4>
+              <p>L’analyse de corps de la requête permet d’inspecter les arguments dans le cas d’une requête en POST</p>
+            </li>
+            <li>
+              <h4>Phase 3 : Traitement des en-têtes de la réponse</h4>
+              <p>Les en-têtes de la réponse du serveur Web, sont observés par ModSecurity afin de décider s’il est nécessaire où non d’inspecter le corps de la réponse.</p>
+            </li>
+            <li>
+              <h4>Phase 4 : Traitement du corps de la réponse</h4>
+              <p>Cette phase est identique à la phase 2 sauf qu’elle traite la réponse fournie par le serveur. Elle permet notamment de prévenir la fuite d’informations via des messages d’erreur.</p>
+            </li>
+            <li>
+              <h4>Phase 5 : La journalisation</h4>
+              <p>Cette phase permet la journalisation des requêtes, elle permet de définir comment la transaction doit être journalisée. Cette phase intervenant en dernier, le traitement de la transaction est déjà effectué. On ne peut donc pas bloquer une transaction lors de cette phase.</p>
+            </li>
+          </ul>
+          <div class="alert alert-success" role="alert">
+            <p>A FAIRE : Trouver et installer à l'aide de apt-get le paquet modsecurity pour apache.</p>
+          </div>
+          <p>Une fois modSecurity installé il faut installer les règles par défaut</p>
+          <p><code>cp -rp  /usr/share/modsecurity-crs/* /etc/modsecurity</code></p>
+          <p><code>cd /etc/modsecurity</code></p>
+          <p><code>for f in `ls base_rules/` ; do ln -s /etc/modsecurity/base_rules/$f activated_rules/$f ; done</code></p>
+          <p><code>for f in `ls optional_rules/` ; do ln -s /etc/modsecurity/optional_rules/$f activated_rules/$f ; done</code></p>
+          <p><code>cp modsecurity.conf-recommended modsecurity.conf</code></p>
+          <p>Vous avez mis en place toutes les règles pour modsecurity</p>
+          <p>Il faut maintenant configurer Apache pour qu'il utilise modsecurity</p>
+          <p>Editer le fichier <code>/etc/apache2/mods-available/security2.conf</code> en y mettant le contenu suivant : </p>
+          <code>
+            <IfModule security2_module><br>
+                Include /etc/modsecurity/*.conf<br>
+                Include /etc/modsecurity/activated_rules/*.conf<br>
+             <br>
+                # enable suspicious URL blocking<br>
+                SecRuleEngine On<br>
+             <br>
+                SecResponseBodyAccess Off<br>
+                SecRequestBodyLimit 13107200<br>
+                SecRequestBodyNoFilesLimit 131072<br>
+                SecRequestBodyInMemoryLimit 131072<br>
+             <br>
+                # uncomment on production<br>
+                #SecAuditEngine Off<br>
+            </IfModule><br>
+          </code>
+          <p>Chargez le module <code>headers</code> dans Apache avec la commande <code>a2enmod headers</code></p>
+          <p>Redémarrer Apache</p>
+          <div class="alert alert-success" role-"alert">
+            <p>Si vous avez une erreur <code>systemctl restart apache2.service</code> vous aidera a résoudre la situation</p>
+          </div>
+          <p>Une fois la situation résolue vous pouvez voir l'activité en temps réel du module sécurity grâce à la commande <code>tail -f /var/log/apache2/modsec_audit.log</code></p>
+          <p>Vous pouvez aller sur <a href="http://www.modsecurity.org/" target="_blank">le site de mod_security</a> pour plus d'informations.</p>
+        </div>
+      </div>
+
+
+      <p><a class="btn btn-primary btn-lg" href="securiteApache-4.html" role="button">Continuer &raquo;</a></p>
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>

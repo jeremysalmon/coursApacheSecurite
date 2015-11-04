@@ -1,0 +1,81 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Apache</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h2>Sécurisation du module PHP</h2>
+          <p>PHP étant un module de PHP il va falloir lui appliquer quelques règles de sécurité pour qu'il ne devienne par une faille dans notre serveur.</p>
+          <h2>Cacher la version de PHP dans les entêtes</h2>
+          <p class="alert alert-success">
+            Accédez à votre page test.php avec votre navigateur et trouvez la version de PHP dans les entêtes
+            ATTENTION : par défaut dans Debian celà est déjà désactivé
+          </p>
+          <p>Pour cacher (comme nous l'avons fait avec Apache) la version de PHP, nous allons modifier sa configuration</p>
+          <p>Editez le fichier <code>/etc/php5/apache2/php.ini</code> et modifier la valeur du paramètre <code>expose_php</code> à <code>Off</code></p>
+          <h2>Cacher les erreurs aux visiteurs</h2>
+          <p>Quand une erreur survient sur une page, PHP affiche le message et les informations sur sa version. Par exemple quand une base de données est accessible il peut afficher le nom de la base voir une requête SQL</p>
+          <p>Pour désactivez ce comportement et logguer dans un fichier les erreurs, dans le fichier php.ini</p>
+          <ul>
+            <li><code>display_errors log_errors=On= Off</code> : cache les erreurs dans le html rendu</li>
+            <li><code>log_errors=On</code> : active le log des erreurs</li>
+          </ul>
+          <h2>Désactivation de code distant</h2>
+          <p>PHP permet d'executer du code distant (sur une autre machine par exemple) et également d'inclure des librairies distantes. Il est préférable de désactiver cette fonctionnalité</p>
+          <ul>
+            <li><code>allow_url_fopen=Off</code> : dans Debian par défaut à On</li>
+            <li><code>allow_url_include = Off</code></li>
+          </ul>
+
+          <br>
+          <p>Pour le reste, le module Apache mod_security s'occupe de tout !</p>
+        </div>
+      </div>
+
+
+      <p><a class="btn btn-primary btn-lg" href="end.html" role="button">Continuer &raquo;</a></p>
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>

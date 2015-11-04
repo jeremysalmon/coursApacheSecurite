@@ -1,0 +1,108 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Apache</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h2>Configurer un Firewall</h2>
+          <p>Linux intègre un Firewall qui lui permet de filtrer les paquets au niveau 3 de la couche OSI.</p>
+          <p>Afin de nous assurer que seuls les ports que nous désirons sont bien autorisés et qu'un autre service installé ne va pas ouvrir de port nous allons configuré iptables pour ne laisser passer que les ports 22, 80 et 443.</p>
+          <h2>Comment connaître les ports qui sont ouverts sur mon serveur</h2>
+          <p>Plusieurs méthodes vous permettent de connaître les ports ouverts sur votre serveur Linux.</p>
+          <p>La première est à travers la commande <code>netstat -a</code>, mais celle ci peut se révéler relativement difficile à lire pour un débutant</p>
+          <p>Le plus simple est d'utiliser l'outil réseau nmap qui est un scanner de port</p>
+          <p>Installer donc <code>nmap</code> à l'aide du gestionnaire de paquets Debian</p>
+          <p>Après l'installation, lancez simplement <code>nmap localhost</code></p>
+          <p>Après quelques secondes (minutes), vous verrez le résultat de vos ports ouverts</p>
+          <h2>Configurez le Firewall Linux</h2>
+          <p>L'utilitaire <code>iptables</code> và permettre a noyau Linux de filtrer les paquets que vous lui indiquerez</p>
+          <p>Nous allons partir sur une configuration restrictive qui va interdire toutes les connexions et n'autoriser que celles que l'on désire</p>
+          <p class="alert alert-danger">
+            Attention, Si vous faites une erreur vous pouvez perdre la connexion SSH. Dans ce cas, vous devez reprendre le contrôle avec la console de VirtualBox. Vous pouvez également 
+          </p>
+          <ul>
+            <li><code>iptables -F</code> : supprime toutes les règles existantes</li>
+            <li><code>iptables -A INPUT -p tcp --dport 22 -j ACCEPT</code> : autorise l'accès au port 22 de n'importe ou</li>
+            <li><code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT</code> : autorise l'accès au port 80 de n'importe ou</li>
+            <li><code>iptables -A INPUT -p tcp --dport 443 -j ACCEPT</code> : autorise l'accès au port </li>
+            <li><code>iptables -A INPUT -j REJECT</code> : interdit tous les paquets entrants. </li>
+          </ul>
+          <p>Vous pouvez voir les règles de votre Firewall en tapant <code>iptables -L</code></p>
+          <p>Vous pouvez maintenant essayer d'accéder à votre serveur Web</p>
+          <h2>Comment rendre mes règles permanentes ?</h2>
+          <p>Actuellement vos règles disparaissent quand vous effectuez un redémarrage de votre ordinateur.</p>
+          <p>Pour rendre les règle permanentes, il existe plusieurs méthodes. Nous allons de notre côté créer un script BASH que nous ferons executer au démarrage de la machine</p>
+          <p>Commencez par créer un fichier un fichier <code>/etc/init.d/firewall.sh</code></p>
+          <p>Insérer ce contenu : </p>
+          <code>
+          #!/bin/bash<br>
+          iptables -F<br>
+          echo " == Suppression des regles existantes : OK"<br>
+          iptables -A INPUT -p tcp --dport 22 -j ACCEPT<br>
+          echo " == Autorisation ajoutee : SSH"<br>
+          iptables -A INPUT -p tcp --dport 80 -j ACCEPT<br>
+          echo " == Autorisation ajoutee : HTTP"<br>
+          iptables -A INPUT -p tcp --dport 443 -j ACCEPT<br>
+          echo " == Autorisation ajoutee : HTTPS"<br>
+          iptables -A INPUT -j REJECT<br>
+          echo " == Interdiction ajoutee : TOUT"<br>
+          echo ""<br>
+          echo ">> Firewall Active"
+          </code>
+          <p>Pour qu'un script soit executable sous Linux il faut lui ajouter le flag <code>+x</code> à l'aide de la commande <code>chmod +x MONFICHIER</code> (ou MONFICHIER est le fichier que vous voulez autoriser en execution)</p>
+          <p>Pour que votre fichier soit lancé au démarrage de la machine il faut créer un lien vers <code>/etc/rcS.d/</code> à l'aide de la commande suivante <code>ln -s /etc/init.d/firewall.sh /etc/rcS.d/S90firewall.sh</code></p>
+          <p class="alert alert-success">Redémarrez votre serveur et vérifier que vous avez bien les règles activées.</p>
+
+          <p class="alert alert-success">A FAIRE : essayer de modifier les regles du firewall pour n'autoriser que votre l'adresse IP de votre machine Linux a se connecter en SSH.</p>  
+
+          <p class="alert alert-success">A FAIRE : LOGGUER avec Iptables les tentatives de Connexion SSH.</p>                    
+        </div>
+      </div>
+
+
+      <p><a class="btn btn-primary btn-lg" href="securiteApache-7.html" role="button">Continuer &raquo;</a></p>
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>

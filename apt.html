@@ -1,0 +1,82 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Cours Apache : Travailler avec Putty</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+            p{
+              font-size:1.5em;
+            }
+            li{
+              font-size:1em;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Cours Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <h2>Gestion de paquets avec APT</h2>
+            <p>APT est le système de gestion de paquets de Debian. Il nous permet de facilement installer/supprimer des logiciels (et toutes leurs dépendances) du système à l'aide de simples commandes.</p>
+            <p>Il nous permet également de rechercher dans son annuaire les logiciels que nous désirons installer.</p>
+            <p>Enfin il nous garanti que les applications viennent d'une source vérifier et nous limite donc les chances d'installer des logiciels maveillants ou avec des virus.</p>
+            <h2>Quelques commandes (en root)</h2>
+            <ul>
+              <li><code>apt-cache search nom_du_logiciel |more</code> : permet de rechercher un logiciel dans la base de données de apt</li>
+              <li><code>apt-cache show nom_du_logiciel</code> : affiche des informations sur le paquets et les dépendances nécessaires</li>
+              <li><code>apt-get install nom_du_logiciel nom_du_logiciel2 </code> : installe la liste des logiciels passés en paramètres</li>
+              <li><code>apt-get remove nom_du_logiciel</code> : supprime le logiciel et ses dépendances non utilisées. Conserve les fichiers de configuration.</li>
+              <li><code>apt-get remove --purge nom_du_logiciel</code> : supprime le logiciel, des dépendances et les fichiers de configuration</li>
+              <li><code>apt-get update</code> : récupère l'annuaire des logiciels du dépôt Debian et met à jour l'annuaire local</li>
+              <li><code>apt-get upgrade</code> : met à jour les logiciels installés</li>
+              <li><code>apt --installed list</code> : avoir la liste des paquets installés</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+            <a class="btn btn-primary btn-lg pull-right" href="fonctionnement-1.html" role="button">Continuer &raquo;</a>
+          </div>
+        </div>
+      </div>
+
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>

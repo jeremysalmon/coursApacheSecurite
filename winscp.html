@@ -1,0 +1,141 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Cours Apache : Travailler avec Winscp</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+            p{
+              font-size:1.5em;
+            }
+            li{
+              font-size:1.5em;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Cours Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <h1>Utilisation de WinSCP</h1>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <p>WinSCP est un client SSH qui và vous permettre de parcourir le système de fichier de votre serveur Linux, directement depuis Windows à l'intérieur de fenêtres équivalentes à l'explorateur Windows.</p>
+            <p>WinSCP utilise le protocole SSH pour vous permettre de créer, modifier, supprimer fichiers et répertoires.</p>
+            <p>WinSCP, comme putty, se connecte à l'aide de vos identifiants Linux. Néanmoins il est a noté que pour travailler sur les fichiers de configuration présent par exemple dans /etc/ il faut être administrateur.</p>
+            <p>Par défaut, le serveur SSH est installé en interdisant la connexion en SSH avec le compte root. Nous allons modifié ce paramétrage pour pouvoir utiliser WinSCP correctement.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/putty.JPG" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Lancez putty et connectez vous à l'adresse IP de votre machine Linux</p>
+            <p>Saisissez le compte utilisateur que vous avez créé au moment de l'installation de Debian.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/putty_connected.JPG" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Vous ête maintenant connecté à Linux depuis Windows</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/sshd_config.jpg" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Passez en mode "Super Utilisateur" (root) en tapant <code>su</code></p>
+            <p>Saisissez le mot de passe du compte root</p>
+            <p>Vous ête maintenant en root.</p>
+            <p>Editez avec nano (ou tout autre éditeur de texte que vous connaissez) le fichier <code>/etc/ssh/sshd_config</code></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/permitRootLogin.jpg" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Trouvez la directive de configuration <code>PermitRootLogin</code> et remplacez sa valeur actuelle par <code>Yes</code></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/sshRestart.jpg" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Pour que la modification soit prise en compte par le serveur SSH il faut le relancer le service.</p>
+            <p>Pour celà tapez dans la console de Linux <code>/etc/init.d/ssh restart</code></p>
+            <p><strong>Vous pouvez maintenant vous connecter en root à SSH</strong></p>
+          </div> 
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/winscpLogin.jpg" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Lancez WinSCP et saisissez l'adresse ip, le login root et son mot de passe.</p>
+            <p>Vous serez alors connectés à votre machine Linux</p>
+            <p>Le panneau de gauche contient les fichiers de votre machine Windows. Le panneau de droite contient les fichiers de votre Machine Linux.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <img src="img/winscpEditeur.jpg" class="img-responsive">
+          </div>
+          <div class="col-md-6">
+            <p>Vous n'avez plus qu'a configurer WinSCP pour utiliser Sublime Text comme éditeur par défaut.</p>
+            <p>Pour celà cliquez sur le menu "Options"/"Preferences"/"Editeur"</p>
+            <p>Cliquer le bouton "Ajouter" puis "Editeur Externe".</p>
+            <p>Sélectionner l'executable de Sublime Texte</p>
+            <p>Faites monter Sublime Texte en haut de la liste des éditeurs pour qu'il devienne l'éditeur par défaut.</p>
+            <p>Le panneau de gauche contient les fichiers de votre machine Windows. Le panneau de droite contient les fichiers de votre Machine Linux.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <a class="btn btn-primary btn-lg pull-right" href="linux.html" role="button">Continuer &raquo;</a>
+          </div>
+        </div>
+      </div>
+
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>

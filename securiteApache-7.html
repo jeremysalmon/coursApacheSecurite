@@ -1,0 +1,79 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Apache</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h2>Fail2Ban : bannir et informer</h2>
+          <p>Fail2Ban est un ensemble de script qui analysent les fichiers de logs et qui permettent de créer dynamiquement des règles iptables pour bannir durant un certain temps les IP qui semblent effectuer des opérations suspectes.</p>
+          <p>Fail2Ban est livré avec un ensemble de scripts par défaut qui vont nous permettre de protéger notre serveur web et SSH</p>
+          <p class="alert alert-success">Installer fail2ban avec le gestionnaire de paquets Debian</p>
+          <p>L'ensemble de la configuration de fail2ban est dans le répertoire <code>/etc/fail2ban/</code></p>
+          <p>Par défaut la configuration n'est pas activée. Pour l'activer il suffit de faire :</p>
+          <p>
+            <code>
+              cd /etc/fail2ban<br>
+              cp jail.conf jail.local
+            </code>
+          </p>
+          <p>Le fichier <code>jail.local</code> contient toutes les règles de travail de notre fail2ban.</p>
+          <p>Pour chaque module, vous trouverez une section <code>[nom_du_module]</code></p>
+          <p>Pour activer un module il suffit de passer <code>enabled</code> a <code>yes</code></p>
+          <p>Le module SSH est par exemple activé par défaut et créé une règle dans iptables si une personne essayes 6 fois un mauvais mot de passe</p>
+          <p>Faites un <code>iptables -L</code> pour voir les règles de votre iptables</p>
+          <p>Essayez de saisir 6 fois un mauvais mot de passe dans Putty</p>
+          <p>Refaites un <code>iptables -L</code> pour voir si une nouvelle règle existe</p>
+          <p class="alert alert-success">Il existe des modules pour Apache. Trouvez ces modules, activez les et testez leur action.<br>
+          <strong>ATTENTION : </strong> quand vous modifier les fichiers de configuration de fail2ban vous devez le relancer !
+          </p>
+          <p>Vous pouvez voir dans le fichier <code>/var/log/fail2ban</code> l'activité de fail2ban</p>
+        </div>
+      </div>
+
+
+      <p><a class="btn btn-primary btn-lg" href="securiteApache-8.html" role="button">Continuer &raquo;</a></p>
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>

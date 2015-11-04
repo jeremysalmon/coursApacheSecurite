@@ -1,0 +1,117 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Apache</title>
+        <meta name="description" content="Cours de déploiement de serveur web sécurisé">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Apache</a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <h2>Installation du module PHP</h2>
+          <p>Nous savons qu'un serveur Web ne sait que nous livrer des pages HTML (et les fichiers CSS, JS, Images, ...) associés.</p>
+          <p>Dans la majorité des cas un module nous permettant de développer des sites "dynamiques" est installé sur le serveur</p>
+          <p>Nous allons installer le module PHP pour Apache</p>
+          <p class="alert alert-success">
+            Installez le module PHP pour Apache à l'aide de APT
+          </p>
+          <p>Le module est maintenant installé et chargé dans Apache. La version CLI est également installée par défaut.</p>
+          <p>Le module Apache nous permet de faire des pages .php servies par le serveur Web</p>
+          <p>Le PHP Cli nous permet de faire des programmes en ligne de commande</p>
+
+          <h2>Création d'un premier Script PHP</h2>
+          <p>Créer un fichier <code>/var/www/html/test.php</code> et insérez le contenu suivant : </p>
+          <p>
+            <code>
+              &lt;h1>Ceci est mon premier programme PHP&lt;/h1><br>
+              &lt;?php<br>
+                &nbspfor($i=0 ; $i<100 ; $i++){<br>
+                  &nbsp&nbsp&nbspecho("Bon Monsieur ".$i."&lt;br>");<br>
+                &nbsp}<br>
+              ?><br>
+            </code>
+          </p>
+          <p>Connectez vous avec votre navigateur sur cette page pour voir le résultat</p>
+
+          <h2>Création d'un script en ligne de commande</h2>
+          <p>PHP nous permet également de faire des script en ligne de commande.</p>
+          <p>Créez un fichier <code>/root/tail.php</code> et insérez le contenu : </p>
+          <p>
+            <code>
+              &lt;?php<br>
+                $parametre = $argv[1];<br>
+                $monFichier = file('/var/log/apache2/access.log');<br>
+                $nbLigne = count($monFichier);<br>
+                $debut = $nbLigne - (int)$parametre;<br>
+                <br>
+                for($i=$debut ; $i<$nbLigne ; $i++){<br>
+                        &nbsp&nbspecho("L".$i." : ".$monFichier[$i]."\n");<br>
+                }<br>
+              ?><br>
+
+            </code>
+          </p>
+          <p>Lancez votre programme : <code>php tail.php 10</code></p>
+          <p class="alert alert-success">
+            Modifiez le fichier PHP pour passer le nom du fichier à lire en paramètre
+          </p>
+          <div style="display:none">
+            <code>
+              <?php<br>
+                $parametre = $argv[2];<br>
+                $monFichier = $argv[1];<br>
+                $nbLigne = count($monFichier);<br>
+                $debut = $nbLigne - (int)$parametre;<br>
+                <br>
+                for($i=$debut ; $i<$nbLigne ; $i++){<br>
+                        &nbsp&nbspecho("L".$i." : ".$monFichier[$i]."\n");<br>
+                }<br>
+              ?><br>
+            </code>
+          </div>
+        </div>
+      </div>
+
+
+      <p><a class="btn btn-primary btn-lg" href="php-2.html" role="button">Continuer &raquo;</a></p>
+      <script src="js/vendor/jquery-1.11.2.min.js"></script>
+      <script src="js/vendor/bootstrap.min.js"></script>
+      <script src="js/main.js"></script>
+    </body>
+</html>
